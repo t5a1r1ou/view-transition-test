@@ -1,0 +1,35 @@
+---
+import Card from "../../components/Card.astro";
+import Layout from "../../layouts/Layout.astro";
+import { items } from "../index.astro";
+export function getStaticPaths() {
+  return [
+    { params: { item: "1" } },
+    { params: { item: "2" } },
+    { params: { item: "3" } },
+    { params: { item: "4" } },
+    { params: { item: "5" } },
+    { params: { item: "6" } },
+  ];
+}
+
+const { item: itemId } = Astro.params;
+
+const item = items.find((_item) => {
+  if (!itemId) {
+    return null;
+  }
+  return Number(itemId) === _item.id;
+});
+---
+
+<Layout title={`商品詳細 | ${itemId}`} heading={`商品詳細 | ${itemId}`}>
+  {
+    item && (
+      <div class="w-1/3 mx-auto">
+        <Card title={item.title} body={item.body} id={item.id} />
+      </div>
+    )
+  }
+  <a href="/" class="absolute bottom-0 right-0 mb-10 mr-10"> 商品一覧に戻る</a>
+</Layout>
